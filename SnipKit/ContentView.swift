@@ -10,50 +10,63 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query private var items: [Item]
+    @Query(sort: \Snippet.createdAt, order: .reverse) private var snippets: [Snippet]
+    @State private var selectedSnippet: Snippet?
 
     var body: some View {
         NavigationSplitView {
             List {
-                ForEach(items) { item in
-                    NavigationLink {
-                        Text("Item at \(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))")
-                    } label: {
-                        Text(item.timestamp, format: Date.FormatStyle(date: .numeric, time: .standard))
-                    }
+                Section("LIBRARY") {
+                    Text("All snippets")
+                    Text("Favorites")
+                    Text("Trash")
                 }
-                .onDelete(perform: deleteItems)
+                Section("TAGS") {
+                    Text("#SwiftUI")
+                    Text("#Swift")
+                }
             }
+            .listStyle(.sidebar)
             .navigationSplitViewColumnWidth(min: 180, ideal: 200)
             .toolbar {
                 ToolbarItem {
-                    Button(action: addItem) {
-                        Label("Add Item", systemImage: "plus")
+                    Button(action: addSnippet) {
+                        Label("Add snippet", systemImage: "plus")
                     }
                 }
             }
-        } detail: {
-            Text("Select an item")
-        }
-    }
-
-    private func addItem() {
-        withAnimation {
-            let newItem = Item(timestamp: Date())
-            modelContext.insert(newItem)
-        }
-    }
-
-    private func deleteItems(offsets: IndexSet) {
-        withAnimation {
-            for index in offsets {
-                modelContext.delete(items[index])
+        } content: {
+            List(selection: $selectedSnippet) {
+                ForEach(snippets) { snippet in
+                    Text(snippet.title).contextMenu {
+                        Button("Delete", role: .destructive) {
+                            modelContext.delete(snippet)
+                        }
+                    }.tag(snippet)
+                }
             }
+        } detail: {
+            switch selectedSnippet {
+            case .some(let s):
+                @Bindable var snippet = s
+                TextField("Title", text: $snippet.title)
+                TextField("Code", text: $snippet.code)
+                TextField("Language", text: $snippet.language)
+            case .none:
+                Text("Select a snippet")
+            }
+        }
+    }
+
+    private func addSnippet() {
+        withAnimation {
+            let newItem = Snippet(title: "New Snippet", code: "")
+            modelContext.insert(newItem)
         }
     }
 }
 
 #Preview {
     ContentView()
-        .modelContainer(for: Item.self, inMemory: true)
+        .modelContainer(for: Snippet.self, inMemory: true)
 }

@@ -12,7 +12,7 @@ import SwiftData
 struct SnipKitApp: App {
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
-            Item.self,
+            Snippet.self, Tag.self, Folder.self
         ])
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
