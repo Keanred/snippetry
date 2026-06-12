@@ -10,9 +10,10 @@ import SwiftData
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
-    @Query(sort: \Snippet.createdAt, order: .reverse) private var snippets: [Snippet]
     @State private var selectedSnippet: Snippet?
-
+    @State private var searchText: String = ""
+    @State private var languageFilter: String?
+    
     var body: some View {
         NavigationSplitView {
             List {
@@ -36,22 +37,45 @@ struct ContentView: View {
                 }
             }
         } content: {
-            List(selection: $selectedSnippet) {
-                ForEach(snippets) { snippet in
-                    Text(snippet.title).contextMenu {
-                        Button("Delete", role: .destructive) {
-                            modelContext.delete(snippet)
-                        }
-                    }.tag(snippet)
-                }
-            }
+            SnippetList(selection: $selectedSnippet,
+                        searchText: $searchText,
+                        language: $languageFilter)
         } detail: {
             switch selectedSnippet {
             case .some(let s):
                 @Bindable var snippet = s
-                TextField("Title", text: $snippet.title)
-                TextField("Code", text: $snippet.code)
-                TextField("Language", text: $snippet.language)
+                VStack(alignment: .leading, spacing: 12) {
+                    TextField("Untitled Snippet", text: $snippet.title)
+                        .textFieldStyle(.plain)
+                        .font(.largeTitle.weight(.semibold))
+                        .lineLimit(1)
+
+                    Divider()
+
+                    TextEditor(text: $snippet.code)
+                        .font(.system(.body, design: .monospaced))
+                        .scrollContentBackground(.hidden)
+                        .padding(8)
+                        .background(Color(nsColor: .textBackgroundColor))
+                        .overlay(
+                            alignment: .topLeading) {
+                                RoundedRectangle(cornerRadius: 6)
+                                    .strokeBorder(Color.secondary.opacity(0.3), lineWidth: 1)
+                            }
+                        .clipShape(RoundedRectangle(cornerRadius: 6))
+                        .frame(maxWidth: .infinity, minHeight: 300)
+
+                    HStack(spacing: 6) {
+                        Label("Language", systemImage: "chevron.left.forwardslash.chevron.right")
+                            .labelStyle(.titleAndIcon)
+                            .foregroundStyle(.secondary)
+                        TextField("plaintext", text: $snippet.language)
+                            .textFieldStyle(.roundedBorder)
+                            .frame(maxWidth: 200)
+                    }
+                }
+                .padding()
+                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
             case .none:
                 Text("Select a snippet")
             }
