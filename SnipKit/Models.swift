@@ -7,6 +7,7 @@
 
 import Foundation
 import SwiftData
+import SwiftUI
 
 @Model final class Snippet {
     var title: String = ""
@@ -26,15 +27,57 @@ import SwiftData
 
 @Model final class Tag {
     var name: String = ""
+    var createdAt: Date = Date.now
+    var colorHex: String?
     var snippets: [Snippet] = []
 
-    init(name: String) { self.name = name }
+    init(name: String, colorHex: String? = nil) {
+        self.name = name
+        self.createdAt = .now
+        self.colorHex = colorHex
+    }
+}
+
+extension Tag {
+    static let defaultNames = ["All tags"]
+
+    var color: Color? {
+        colorHex.flatMap { Color(hex: $0) }
+    }
+
+    @MainActor
+    static func seedDefaultsIfNeeded(in context: ModelContext) {
+        let existing = (try? context.fetch(FetchDescriptor<Tag>())) ?? []
+        let existingNames = Set(existing.map(\.name))
+        for name in defaultNames where !existingNames.contains(name) {
+            context.insert(Tag(name: name))
+        }
+        try? context.save()
+    }
 }
 
 @Model final class Folder {
     var name: String = ""
+    var createdAt: Date = Date.now
     @Relationship(deleteRule: .nullify, inverse: \Snippet.folder)
     var snippets: [Snippet] = []
 
-    init(name: String) { self.name = name }
+    init(name: String) {
+        self.name = name
+        self.createdAt = .now
+    }
+}
+
+extension Folder {
+    static let defaultNames = ["All snippets", "Favorites", "Trash"]
+
+    @MainActor
+    static func seedDefaultsIfNeeded(in context: ModelContext) {
+        let existing = (try? context.fetch(FetchDescriptor<Folder>())) ?? []
+        let existingNames = Set(existing.map(\.name))
+        for name in defaultNames where !existingNames.contains(name) {
+            context.insert(Folder(name: name))
+        }
+        try? context.save()
+    }
 }

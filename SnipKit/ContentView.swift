@@ -13,79 +13,49 @@ struct ContentView: View {
     @State private var selectedSnippet: Snippet?
     @State private var searchText: String = ""
     @State private var languageFilter: String?
-    
+    @State private var folderSelection: Folder?
+    @State private var tagSelection: Tag?
+    @State private var isTagSheetPresented: Bool = false
+    @State private var editingTag: Tag?
+
     var body: some View {
         NavigationSplitView {
-            List {
-                Section("LIBRARY") {
-                    Text("All snippets")
-                    Text("Favorites")
-                    Text("Trash")
+            SidebarView(folderSelection: $folderSelection,
+                        tagSelection: $tagSelection,
+                        onAddTag: presentNewTagSheet,
+                        onEditTag: presentEditTagSheet,
+                        onAddSnippet: addSnippet)
+                .sheet(isPresented: $isTagSheetPresented) {
+                    TagEditorSheet(editingTag: editingTag)
                 }
-                Section("TAGS") {
-                    Text("#SwiftUI")
-                    Text("#Swift")
-                }
-            }
-            .listStyle(.sidebar)
-            .navigationSplitViewColumnWidth(min: 180, ideal: 200)
-            .toolbar {
-                ToolbarItem {
-                    Button(action: addSnippet) {
-                        Label("Add snippet", systemImage: "plus")
-                    }
-                }
-            }
         } content: {
-            SnippetList(selection: $selectedSnippet,
-                        searchText: $searchText,
-                        language: $languageFilter)
+            SnippetListView(selection: $selectedSnippet,
+                            searchText: $searchText,
+                            language: $languageFilter,
+                            folder: $folderSelection,
+                            tag: $tagSelection)
         } detail: {
-            switch selectedSnippet {
-            case .some(let s):
-                @Bindable var snippet = s
-                VStack(alignment: .leading, spacing: 12) {
-                    TextField("Untitled Snippet", text: $snippet.title)
-                        .textFieldStyle(.plain)
-                        .font(.largeTitle.weight(.semibold))
-                        .lineLimit(1)
-
-                    Divider()
-
-                    TextEditor(text: $snippet.code)
-                        .font(.system(.body, design: .monospaced))
-                        .scrollContentBackground(.hidden)
-                        .padding(8)
-                        .background(Color(nsColor: .textBackgroundColor))
-                        .overlay(
-                            alignment: .topLeading) {
-                                RoundedRectangle(cornerRadius: 6)
-                                    .strokeBorder(Color.secondary.opacity(0.3), lineWidth: 1)
-                            }
-                        .clipShape(RoundedRectangle(cornerRadius: 6))
-                        .frame(maxWidth: .infinity, minHeight: 300)
-
-                    HStack(spacing: 6) {
-                        Label("Language", systemImage: "chevron.left.forwardslash.chevron.right")
-                            .labelStyle(.titleAndIcon)
-                            .foregroundStyle(.secondary)
-                        TextField("plaintext", text: $snippet.language)
-                            .textFieldStyle(.roundedBorder)
-                            .frame(maxWidth: 200)
-                    }
-                }
-                .padding()
-                .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-            case .none:
+            if let snippet = selectedSnippet {
+                SnippetDetailView(snippet: snippet)
+            } else {
                 Text("Select a snippet")
             }
         }
     }
 
+    private func presentNewTagSheet() {
+        editingTag = nil
+        isTagSheetPresented = true
+    }
+
+    private func presentEditTagSheet(_ tag: Tag) {
+        editingTag = tag
+        isTagSheetPresented = true
+    }
+
     private func addSnippet() {
         withAnimation {
-            let newItem = Snippet(title: "New Snippet", code: "")
-            modelContext.insert(newItem)
+            modelContext.insert(Snippet(title: "New Snippet", code: ""))
         }
     }
 }

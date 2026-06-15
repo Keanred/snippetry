@@ -10,6 +10,7 @@ import SwiftData
 
 @main
 struct SnipKitApp: App {
+    @MainActor
     var sharedModelContainer: ModelContainer = {
         let schema = Schema([
             Snippet.self, Tag.self, Folder.self
@@ -17,7 +18,10 @@ struct SnipKitApp: App {
         let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
 
         do {
-            return try ModelContainer(for: schema, configurations: [modelConfiguration])
+            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
+            Folder.seedDefaultsIfNeeded(in: container.mainContext)
+            Tag.seedDefaultsIfNeeded(in: container.mainContext)
+            return container
         } catch {
             fatalError("Could not create ModelContainer: \(error)")
         }

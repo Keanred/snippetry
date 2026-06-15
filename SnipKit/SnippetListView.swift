@@ -8,24 +8,35 @@
 import SwiftUI
 import SwiftData
 
-struct SnippetList: View {
+struct SnippetListView: View {
     @Environment(\.modelContext) private var modelContext
     @Query private var snippets: [Snippet]
     @Query private var allSnippets: [Snippet]
     @Binding var selection: Snippet?
     @Binding var searchText: String
     @Binding var language: String?
+    @Binding var folder: Folder?
+    @Binding var tag: Tag?
 
-    init(selection: Binding<Snippet?>, searchText: Binding<String>, language: Binding<String?>) {
+    init(selection: Binding<Snippet?>,
+         searchText: Binding<String>,
+         language: Binding<String?>,
+         folder: Binding<Folder?>,
+         tag: Binding<Tag?>) {
         _selection = selection
         _searchText = searchText
         _language = language
+        _folder = folder
+        _tag = tag
         let text = searchText.wrappedValue
-        _snippets = Query(filter: #Predicate { snippet in
-            text.isEmpty
+        let langValue = language.wrappedValue ?? ""
+        let langActive = language.wrappedValue != nil
+        _snippets = Query(filter: #Predicate<Snippet> { snippet in
+            (text.isEmpty
                 || snippet.title.localizedStandardContains(text)
                 || snippet.code.localizedStandardContains(text)
-                || snippet.language.localizedStandardContains(text)
+                || snippet.language.localizedStandardContains(text))
+            && (!langActive || snippet.language == langValue)
         }, sort: \.createdAt, order: .reverse)
     }
 
@@ -33,14 +44,17 @@ struct SnippetList: View {
         Array(Set(allSnippets.map(\.language))).sorted()
     }
 
-    private var filteredSnippets: [Snippet] {
-        guard let language else { return snippets }
-        return snippets.filter { $0.language == language }
+    private var visibleSnippets: [Snippet] {
+        snippets.filter { snippet in
+            if let folder, folder.name != "All snippets", snippet.folder != folder { return false }
+            if let tag, tag.name != "All tags", !snippet.tags.contains(where: { $0 == tag }) { return false }
+            return true
+        }
     }
 
     var body: some View {
         List(selection: $selection) {
-            ForEach(filteredSnippets) { snippet in
+            ForEach(visibleSnippets) { snippet in
                 Text(snippet.title)
                     .contextMenu {
                         Button("Delete", role: .destructive) {
@@ -79,8 +93,10 @@ struct SnippetList: View {
 }
 
 #Preview {
-    SnippetList(selection: .constant(nil),
+    SnippetListView(selection: .constant(nil),
                 searchText: .constant(""),
-                language: .constant(nil))
+                language: .constant(nil),
+                folder: .constant(nil),
+                tag: .constant(nil))
         .modelContainer(for: Snippet.self, inMemory: true)
 }
