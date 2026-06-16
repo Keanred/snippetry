@@ -7,30 +7,51 @@
 
 import SwiftUI
 import SwiftData
+import AppKit
+import KeyboardShortcuts
 
 @main
-struct SnipKitApp: App {
-    @MainActor
-    var sharedModelContainer: ModelContainer = {
-        let schema = Schema([
-            Snippet.self, Tag.self, Folder.self
-        ])
-        let modelConfiguration = ModelConfiguration(schema: schema, isStoredInMemoryOnly: false)
-
-        do {
-            let container = try ModelContainer(for: schema, configurations: [modelConfiguration])
-            Folder.seedDefaultsIfNeeded(in: container.mainContext)
-            Tag.seedDefaultsIfNeeded(in: container.mainContext)
-            return container
-        } catch {
-            fatalError("Could not create ModelContainer: \(error)")
-        }
+struct SnipShelfApp: App {
+    let container: ModelContainer = {
+        try! ModelContainer(for: Snippet.self, Tag.self, Folder.self)
     }()
 
-    var body: some Scene {
-        WindowGroup {
-            ContentView()
+    init() {
+        KeyboardShortcuts.onKeyDown(for: .togglePicker) {
+            Self.togglePicker()
         }
-        .modelContainer(sharedModelContainer)
+    }
+
+    var body: some Scene {
+        WindowGroup { ContentView() }
+            .modelContainer(container)
+            .commands {
+                CommandMenu("Snippets") {
+                    Button("Toggle Snippet Picker") {
+                        Self.togglePicker()
+                    }
+                    .globalKeyboardShortcut(.togglePicker)
+                }
+            }
+
+        MenuBarExtra("SnipKit", systemImage: "chevron.left.forwardslash.chevron.right") {
+            MenuBarView()
+        }
+        .menuBarExtraStyle(.window)
+        .modelContainer(container)
+
+        Settings {
+            SettingsView()
+        }
+    }
+
+    private static func togglePicker() {
+        NSApp.activate(ignoringOtherApps: true)
+        let button: NSStatusBarButton? = NSApp.windows.lazy.compactMap { window in
+            (window.contentView as? NSStatusBarButton)
+                ?? window.contentView?.subviews.lazy.compactMap({ $0 as? NSStatusBarButton }).first
+        }.first
+        button?.performClick(nil)
     }
 }
+

@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import KeyboardShortcuts
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
@@ -17,6 +18,7 @@ struct ContentView: View {
     @State private var tagSelection: Tag?
     @State private var isTagSheetPresented: Bool = false
     @State private var editingTag: Tag?
+    @State private var isHelpPresented: Bool = false
 
     var body: some View {
         NavigationSplitView {
@@ -41,6 +43,19 @@ struct ContentView: View {
                 Text("Select a snippet")
             }
         }
+        .toolbar {
+            ToolbarItem(placement: .automatic) {
+                Button {
+                    isHelpPresented.toggle()
+                } label: {
+                    Label("Shortcuts", systemImage: "questionmark.circle")
+                }
+                .help("Keyboard shortcuts")
+                .popover(isPresented: $isHelpPresented, arrowEdge: .bottom) {
+                    ShortcutsHelpView()
+                }
+            }
+        }
     }
 
     private func presentNewTagSheet() {
@@ -57,6 +72,30 @@ struct ContentView: View {
         withAnimation {
             modelContext.insert(Snippet(title: "New Snippet", code: ""))
         }
+    }
+}
+
+private struct ShortcutsHelpView: View {
+    @Environment(\.openSettings) private var openSettings
+
+    var body: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text("Keyboard Shortcuts")
+                .font(.headline)
+            HStack {
+                Text("Toggle picker")
+                Spacer(minLength: 16)
+                Text(KeyboardShortcuts.getShortcut(for: .togglePicker)?.description ?? "Not set")
+                    .foregroundStyle(.secondary)
+                    .monospaced()
+            }
+            Divider()
+            Button("Change in Settings…") {
+                openSettings()
+            }
+        }
+        .padding(16)
+        .frame(width: 260)
     }
 }
 

@@ -30,11 +30,7 @@ struct SnippetDetailView: View {
     }
 
     private var codeEditor: some View {
-        TextEditor(text: $snippet.code)
-            .font(.system(.body, design: .monospaced))
-            .scrollContentBackground(.hidden)
-            .padding(8)
-            .background(Color(nsColor: .textBackgroundColor))
+        HighlightedCodeEditor(code: $snippet.code, language: snippet.language)
             .overlay(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 6)
                     .strokeBorder(Color.secondary.opacity(0.3), lineWidth: 1)

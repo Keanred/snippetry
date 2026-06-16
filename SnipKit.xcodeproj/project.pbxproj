@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		D52B62582FE07DA500CADCCA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = D52B62572FE07DA500CADCCA /* KeyboardShortcuts */; };
+		D52B625A2FE07F9300CADCCA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52B62592FE07F9300CADCCA /* SettingsView.swift */; };
+		D52B62612FE087DD00CADCCA /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = D52B62602FE087DD00CADCCA /* Highlightr */; };
 		D54366332FDC5F7C00CCA8B3 /* snipkit.icon in Resources */ = {isa = PBXBuildFile; fileRef = D54366322FDC5F7C00CCA8B3 /* snipkit.icon */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +31,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		D52B62592FE07F9300CADCCA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
 		D54366322FDC5F7C00CCA8B3 /* snipkit.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = snipkit.icon; sourceTree = "<group>"; };
 		D5D67B832FD9BBE900A514CB /* SnipKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnipKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D67B922FD9BBEA00A514CB /* SnipKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnipKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -57,6 +61,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D52B62612FE087DD00CADCCA /* Highlightr in Frameworks */,
+				D52B62582FE07DA500CADCCA /* KeyboardShortcuts in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -77,6 +83,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D52B62562FE07DA500CADCCA /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		D5D67B7A2FD9BBE900A514CB = {
 			isa = PBXGroup;
 			children = (
@@ -85,6 +98,8 @@
 				D5D67B9F2FD9BBEA00A514CB /* SnipKitUITests */,
 				D5D67B842FD9BBE900A514CB /* Products */,
 				D54366322FDC5F7C00CCA8B3 /* snipkit.icon */,
+				D52B62562FE07DA500CADCCA /* Frameworks */,
+				D52B62592FE07F9300CADCCA /* SettingsView.swift */,
 			);
 			sourceTree = "<group>";
 		};
@@ -118,6 +133,8 @@
 			);
 			name = SnipKit;
 			packageProductDependencies = (
+				D52B62572FE07DA500CADCCA /* KeyboardShortcuts */,
+				D52B62602FE087DD00CADCCA /* Highlightr */,
 			);
 			productName = SnipKit;
 			productReference = D5D67B832FD9BBE900A514CB /* SnipKit.app */;
@@ -201,6 +218,10 @@
 			);
 			mainGroup = D5D67B7A2FD9BBE900A514CB;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				D52B62552FE075C900CADCCA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */,
+				D52B625B2FE086E300CADCCA /* XCRemoteSwiftPackageReference "Highlightr" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = D5D67B842FD9BBE900A514CB /* Products */;
 			projectDirPath = "";
@@ -243,6 +264,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D52B625A2FE07F9300CADCCA /* SettingsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -598,6 +620,38 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		D52B62552FE075C900CADCCA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/sindresorhus/KeyboardShortcuts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
+		D52B625B2FE086E300CADCCA /* XCRemoteSwiftPackageReference "Highlightr" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/raspu/Highlightr";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		D52B62572FE07DA500CADCCA /* KeyboardShortcuts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D52B62552FE075C900CADCCA /* XCRemoteSwiftPackageReference "KeyboardShortcuts" */;
+			productName = KeyboardShortcuts;
+		};
+		D52B62602FE087DD00CADCCA /* Highlightr */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = D52B625B2FE086E300CADCCA /* XCRemoteSwiftPackageReference "Highlightr" */;
+			productName = Highlightr;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = D5D67B7B2FD9BBE900A514CB /* Project object */;
 }
