@@ -56,21 +56,23 @@ struct HighlightedCodeEditor: NSViewRepresentable {
 
     @Environment(\.colorScheme) private var colorScheme
 
+    private var themeName: String {
+        colorScheme == .dark ? "xcode-dark" : "xcode"
+    }
+
     func makeCoordinator() -> Coordinator { Coordinator() }
 
     func makeNSView(context: Context) -> NSScrollView {
-        let textStorage = CodeAttributedString()
-        let layoutManager = NSLayoutManager()
-        textStorage.addLayoutManager(layoutManager)
+        let scrollView = NSTextView.scrollableTextView()
+        scrollView.borderType = .noBorder
+        scrollView.drawsBackground = false
+        scrollView.hasVerticalScroller = true
+        scrollView.hasHorizontalScroller = false
+        scrollView.autohidesScrollers = true
 
-        let container = NSTextContainer(
-            containerSize: NSSize(width: 0, height: CGFloat.greatestFiniteMagnitude)
-        )
-        container.widthTracksTextView = true
-        container.heightTracksTextView = false
-        layoutManager.addTextContainer(container)
-
-        let textView = NSTextView(frame: .zero, textContainer: container)
+        guard let textView = scrollView.documentView as? NSTextView else {
+            return scrollView
+        }
         textView.isEditable = true
         textView.isSelectable = true
         textView.isRichText = false
@@ -82,77 +84,103 @@ struct HighlightedCodeEditor: NSViewRepresentable {
             ofSize: NSFont.systemFontSize, weight: .regular
         )
         textView.delegate = context.coordinator
-        textView.isHorizontallyResizable = false
         textView.autoresizingMask = [.width]
-        textView.minSize = NSSize(width: 0, height: 0)
-        textView.maxSize = NSSize(
-            width: CGFloat.greatestFiniteMagnitude,
-            height: CGFloat.greatestFiniteMagnitude
-        )
+        textView.isVerticallyResizable = true
+        textView.isHorizontallyResizable = false
+        textView.textContainer?.widthTracksTextView = true
+        textView.textContainer?.heightTracksTextView = false
 
-        let scrollView = NSScrollView()
-        scrollView.documentView = textView
-        scrollView.hasVerticalScroller = true
-        scrollView.borderType = .noBorder
-        scrollView.drawsBackground = false
+        textView.string = code
 
         context.coordinator.parent = self
-        context.coordinator.textStorage = textStorage
-
-        if textView.string != code {
-            textView.string = code
-        }
+        context.coordinator.textView = textView
+        context.coordinator.currentLanguage = language
+        context.coordinator.currentTheme = themeName
+        context.coordinator.applyHighlight()
         return scrollView
     }
 
     func updateNSView(_ scrollView: NSScrollView, context: Context) {
         context.coordinator.parent = self
         guard let textView = scrollView.documentView as? NSTextView,
-              let storage = context.coordinator.textStorage
+              let storage = textView.textStorage
         else { return }
 
-        let themeName = colorScheme == .dark ? "xcode-dark" : "xcode"
-        if context.coordinator.currentTheme != themeName {
-            _ = storage.highlightr.setTheme(to: themeName)
-            context.coordinator.currentTheme = themeName
-        }
-
-        let resolved = HighlightrPool.resolve(language, against: storage.highlightr.supportedLanguages())
-        let languageChanged = storage.language != resolved
         let contentChanged = textView.string != code
+        let languageChanged = context.coordinator.currentLanguage != language
+        let themeChanged = context.coordinator.currentTheme != themeName
 
         if contentChanged {
             let selection = textView.selectedRanges
-            let baseFont = NSFont.monospacedSystemFont(
-                ofSize: NSFont.systemFontSize, weight: .regular
-            )
-            storage.beginEditing()
             storage.replaceCharacters(
                 in: NSRange(location: 0, length: storage.length),
                 with: code
             )
-            storage.setAttributes(
-                [.font: baseFont],
-                range: NSRange(location: 0, length: storage.length)
-            )
-            storage.endEditing()
             textView.selectedRanges = selection
         }
 
-        if languageChanged {
-            storage.language = resolved
+        if contentChanged || languageChanged || themeChanged {
+            context.coordinator.currentLanguage = language
+            context.coordinator.currentTheme = themeName
+            context.coordinator.applyHighlight()
         }
     }
 
     @MainActor
     final class Coordinator: NSObject, NSTextViewDelegate {
         var parent: HighlightedCodeEditor?
-        var textStorage: CodeAttributedString?
+        weak var textView: NSTextView?
+        var currentLanguage: String?
         var currentTheme: String?
+        private var pending: DispatchWorkItem?
 
         func textDidChange(_ notification: Notification) {
             guard let textView = notification.object as? NSTextView else { return }
             parent?.code = textView.string
+            schedule()
+        }
+
+        private func schedule() {
+            pending?.cancel()
+            let work = DispatchWorkItem { [weak self] in
+                self?.applyHighlight()
+            }
+            pending = work
+            DispatchQueue.main.asyncAfter(
+                deadline: .now() + .milliseconds(80),
+                execute: work
+            )
+        }
+
+        func applyHighlight() {
+            pending?.cancel()
+            pending = nil
+            guard let textView = textView,
+                  let storage = textView.textStorage,
+                  let parent = parent
+            else { return }
+
+            let currentText = textView.string
+            let ns = HighlightrPool.shared.highlight(
+                code: currentText,
+                language: parent.language,
+                theme: currentTheme ?? "xcode"
+            )
+            guard ns.string == currentText else { return }
+
+            let baseFont = NSFont.monospacedSystemFont(
+                ofSize: NSFont.systemFontSize, weight: .regular
+            )
+            let fullRange = NSRange(location: 0, length: storage.length)
+            storage.beginEditing()
+            storage.setAttributes([.font: baseFont], range: fullRange)
+            ns.enumerateAttribute(.foregroundColor, in: NSRange(location: 0, length: ns.length)) { value, range, _ in
+                guard let color = value as? NSColor,
+                      range.location + range.length <= storage.length
+                else { return }
+                storage.addAttribute(.foregroundColor, value: color, range: range)
+            }
+            storage.endEditing()
         }
     }
 }

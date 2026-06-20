@@ -8,8 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		D52B62582FE07DA500CADCCA /* KeyboardShortcuts in Frameworks */ = {isa = PBXBuildFile; productRef = D52B62572FE07DA500CADCCA /* KeyboardShortcuts */; };
-		D52B625A2FE07F9300CADCCA /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52B62592FE07F9300CADCCA /* SettingsView.swift */; };
 		D52B62612FE087DD00CADCCA /* Highlightr in Frameworks */ = {isa = PBXBuildFile; productRef = D52B62602FE087DD00CADCCA /* Highlightr */; };
+		D52B62632FE10F8A00CADCCA /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = D52B62622FE10F8A00CADCCA /* AppState.swift */; };
 		D54366332FDC5F7C00CCA8B3 /* snipkit.icon in Resources */ = {isa = PBXBuildFile; fileRef = D54366322FDC5F7C00CCA8B3 /* snipkit.icon */; };
 /* End PBXBuildFile section */
 
@@ -31,16 +31,30 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		D52B62592FE07F9300CADCCA /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		D52B62622FE10F8A00CADCCA /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		D52B62842FE16EDF00CADCCA /* SnipKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnipKit.entitlements; sourceTree = "<group>"; };
 		D54366322FDC5F7C00CCA8B3 /* snipkit.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = snipkit.icon; sourceTree = "<group>"; };
 		D5D67B832FD9BBE900A514CB /* SnipKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnipKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D67B922FD9BBEA00A514CB /* SnipKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnipKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		D5D67B9C2FD9BBEA00A514CB /* SnipKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnipKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		D52B62832FE16E6F00CADCCA /* Exceptions for "SnipKit" folder in "SnipKit" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Info.plist,
+			);
+			target = D5D67B822FD9BBE900A514CB /* SnipKit */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		D5D67B852FD9BBE900A514CB /* SnipKit */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				D52B62832FE16E6F00CADCCA /* Exceptions for "SnipKit" folder in "SnipKit" target */,
+			);
 			path = SnipKit;
 			sourceTree = "<group>";
 		};
@@ -99,7 +113,8 @@
 				D5D67B842FD9BBE900A514CB /* Products */,
 				D54366322FDC5F7C00CCA8B3 /* snipkit.icon */,
 				D52B62562FE07DA500CADCCA /* Frameworks */,
-				D52B62592FE07F9300CADCCA /* SettingsView.swift */,
+				D52B62622FE10F8A00CADCCA /* AppState.swift */,
+				D52B62842FE16EDF00CADCCA /* SnipKit.entitlements */,
 			);
 			sourceTree = "<group>";
 		};
@@ -264,7 +279,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				D52B625A2FE07F9300CADCCA /* SettingsView.swift in Sources */,
+				D52B62632FE10F8A00CADCCA /* AppState.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -331,6 +346,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = SnipKit;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
@@ -394,6 +410,7 @@
 				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_ENTITLEMENTS = SnipKit;
 				COPY_PHASE_STRIP = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
@@ -422,13 +439,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = snipkit;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = SnipKit;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V4W3DY8YS7;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
@@ -440,6 +459,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnipKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SnipKit;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
@@ -466,13 +486,15 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = snipkit;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
+				CODE_SIGN_ENTITLEMENTS = SnipKit;
+				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = V4W3DY8YS7;
 				ENABLE_APP_SANDBOX = YES;
 				ENABLE_INCOMING_NETWORK_CONNECTIONS = NO;
-				ENABLE_OUTGOING_NETWORK_CONNECTIONS = NO;
+				ENABLE_OUTGOING_NETWORK_CONNECTIONS = YES;
 				ENABLE_PREVIEWS = YES;
 				ENABLE_RESOURCE_ACCESS_AUDIO_INPUT = NO;
 				ENABLE_RESOURCE_ACCESS_BLUETOOTH = NO;
@@ -484,6 +506,7 @@
 				ENABLE_RESOURCE_ACCESS_USB = NO;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = SnipKit/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = SnipKit;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";

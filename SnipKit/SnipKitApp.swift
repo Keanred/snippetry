@@ -16,6 +16,8 @@ struct SnipShelfApp: App {
         try! ModelContainer(for: Snippet.self, Tag.self, Folder.self)
     }()
 
+    @State private var appState = AppState()
+
     init() {
         KeyboardShortcuts.onKeyDown(for: .togglePicker) {
             Self.togglePicker()
@@ -23,10 +25,22 @@ struct SnipShelfApp: App {
     }
 
     var body: some Scene {
-        WindowGroup { ContentView() }
+
+        WindowGroup { ContentView().environment(appState) }
             .modelContainer(container)
             .commands {
+                CommandGroup(replacing: .newItem) {
+                    Button("New Snippet") {
+                        appState.newSnippetTrigger &+= 1
+                    }
+                    .keyboardShortcut("n", modifiers: [.command])
+                }
                 CommandMenu("Snippets") {
+                    Button("Focus Search") {
+                        appState.focusSearchTrigger &+= 1
+                    }
+                    .keyboardShortcut("f", modifiers: [.command])
+                    Divider()
                     Button("Toggle Snippet Picker") {
                         Self.togglePicker()
                     }
@@ -47,11 +61,24 @@ struct SnipShelfApp: App {
 
     private static func togglePicker() {
         NSApp.activate(ignoringOtherApps: true)
-        let button: NSStatusBarButton? = NSApp.windows.lazy.compactMap { window in
-            (window.contentView as? NSStatusBarButton)
-                ?? window.contentView?.subviews.lazy.compactMap({ $0 as? NSStatusBarButton }).first
-        }.first
-        button?.performClick(nil)
+        for window in NSApp.windows {
+            guard let content = window.contentView,
+                  let button = findStatusButton(in: content)
+            else { continue }
+            button.performClick(nil)
+            return
+        }
+    }
+
+    private static func findStatusButton(in view: NSView) -> NSStatusBarButton? {
+        if let button = view as? NSStatusBarButton {
+            return button
+        }
+        for subview in view.subviews {
+            if let found = findStatusButton(in: subview) {
+                return found
+            }
+        }
+        return nil
     }
 }
-

@@ -11,6 +11,8 @@ import KeyboardShortcuts
 
 struct ContentView: View {
     @Environment(\.modelContext) private var modelContext
+    @Environment(AppState.self) private var appState
+    @AppStorage("defaultLanguage") private var defaultLanguage: String = "plaintext"
     @State private var selectedSnippet: Snippet?
     @State private var searchText: String = ""
     @State private var languageFilter: String?
@@ -56,6 +58,9 @@ struct ContentView: View {
                 }
             }
         }
+        .onChange(of: appState.newSnippetTrigger) { _, _ in
+            addSnippet()
+        }
     }
 
     private func presentNewTagSheet() {
@@ -70,7 +75,7 @@ struct ContentView: View {
 
     private func addSnippet() {
         withAnimation {
-            modelContext.insert(Snippet(title: "New Snippet", code: ""))
+            modelContext.insert(Snippet(title: "New Snippet", code: "", language: defaultLanguage))
         }
     }
 }
@@ -101,5 +106,6 @@ private struct ShortcutsHelpView: View {
 
 #Preview {
     ContentView()
+        .environment(AppState())
         .modelContainer(for: Snippet.self, inMemory: true)
 }

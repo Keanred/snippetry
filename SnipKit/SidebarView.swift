@@ -21,7 +21,8 @@ struct SidebarView: View {
             List(selection: $folderSelection) {
                 Section("LIBRARY") {
                     ForEach(folders) { folder in
-                        Text(folder.name).tag(folder)
+                        Label(folder.name, systemImage: folderIcon(folder.name))
+                            .tag(folder)
                     }
                 }
             }
@@ -31,16 +32,21 @@ struct SidebarView: View {
             List(selection: $tagSelection) {
                 Section {
                     ForEach(tags) { tag in
-                        Text(tag.name)
-                            .tag(tag)
-                            .contextMenu {
-                                if !Tag.defaultNames.contains(tag.name) {
-                                    Button("Edit") { onEditTag(tag) }
-                                    Button("Delete", role: .destructive) {
-                                        modelContext.delete(tag)
-                                    }
+                        Label {
+                            Text(tag.name)
+                        } icon: {
+                            Image(systemName: "tag.fill")
+                                .foregroundStyle(tag.color ?? .secondary)
+                        }
+                        .tag(tag)
+                        .contextMenu {
+                            if !Tag.defaultNames.contains(tag.name) {
+                                Button("Edit") { onEditTag(tag) }
+                                Button("Delete", role: .destructive) {
+                                    modelContext.delete(tag)
                                 }
                             }
+                        }
                     }
                 } header: {
                     HStack {
@@ -63,6 +69,15 @@ struct SidebarView: View {
                     }
                 }
             }
+        }
+    }
+
+    private func folderIcon(_ name: String) -> String {
+        switch name {
+        case "All snippets": return "tray.full"
+        case "Favorites": return "star"
+        case "Trash": return "trash"
+        default: return "folder"
         }
     }
 }

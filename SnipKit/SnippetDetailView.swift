@@ -5,28 +5,87 @@
 
 import SwiftUI
 import SwiftData
+import AppKit
 
 struct SnippetDetailView: View {
     @Bindable var snippet: Snippet
     @Query(sort: \Folder.createdAt) private var folders: [Folder]
     @Query(sort: \Tag.createdAt) private var tags: [Tag]
+    @State private var didCopy: Bool = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
-            TextField("Untitled Snippet", text: $snippet.title)
-                .textFieldStyle(.plain)
-                .font(.largeTitle.weight(.semibold))
-                .lineLimit(1)
-
-            Divider()
-
             codeEditor
-            folderRow
-            languageRow
+            HStack(spacing: 12) {
+                inlineCopyButton
+                Spacer()
+            }
+            HStack(spacing: 16) {
+                folderRow
+                languageRow
+            }
             tagsRow
+            metadataBar
         }
         .padding()
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        .toolbar {
+            ToolbarItem(placement: .principal) {
+                TextField("Untitled Snippet", text: $snippet.title)
+                    .textFieldStyle(.plain)
+                    .font(.headline)
+                    .lineLimit(1)
+                    .frame(minWidth: 200, idealWidth: 320, maxWidth: 480)
+            }
+            ToolbarItem(placement: .primaryAction) {
+                copyButton
+            }
+        }
+    }
+
+    private var copyButton: some View {
+        Button {
+            copyCode()
+        } label: {
+            Label(
+                didCopy ? "Copied" : "Copy",
+                systemImage: didCopy ? "checkmark.circle.fill" : "doc.on.doc"
+            )
+        }
+        .help("Copy snippet to clipboard")
+    }
+
+    private var inlineCopyButton: some View {
+        Button {
+            copyCode()
+        } label: {
+            Label(
+                didCopy ? "Copied to clipboard" : "Copy to Clipboard",
+                systemImage: didCopy ? "checkmark.circle.fill" : "doc.on.doc"
+            )
+            .labelStyle(.titleAndIcon)
+            .font(.callout.weight(.medium))
+        }
+        .buttonStyle(.borderedProminent)
+        .controlSize(.regular)
+        .tint(didCopy ? .green : .accentColor)
+        .keyboardShortcut("c", modifiers: [.command, .shift])
+        .help("Copy snippet to clipboard (⇧⌘C)")
+    }
+
+    private func copyCode() {
+        let pb = NSPasteboard.general
+        pb.clearContents()
+        pb.setString(snippet.code, forType: .string)
+        withAnimation(.easeOut(duration: 0.15)) {
+            didCopy = true
+        }
+        Task {
+            try? await Task.sleep(for: .milliseconds(900))
+            withAnimation(.easeIn(duration: 0.15)) {
+                didCopy = false
+            }
+        }
     }
 
     private var codeEditor: some View {
@@ -34,6 +93,7 @@ struct SnippetDetailView: View {
             .overlay(alignment: .topLeading) {
                 RoundedRectangle(cornerRadius: 6)
                     .strokeBorder(Color.secondary.opacity(0.3), lineWidth: 1)
+                    .allowsHitTesting(false)
             }
             .clipShape(RoundedRectangle(cornerRadius: 6))
             .frame(maxWidth: .infinity, minHeight: 300)
@@ -60,26 +120,38 @@ struct SnippetDetailView: View {
             Label("Language", systemImage: "chevron.left.forwardslash.chevron.right")
                 .labelStyle(.titleAndIcon)
                 .foregroundStyle(.secondary)
-            TextField("plaintext", text: $snippet.language)
-                .textFieldStyle(.roundedBorder)
-                .frame(maxWidth: 200)
-            Menu {
+            Picker("Language", selection: $snippet.language) {
                 ForEach(Languages.popular, id: \.self) { lang in
-                    Button {
-                        snippet.language = lang
-                    } label: {
-                        if snippet.language == lang {
-                            Label(lang, systemImage: "checkmark")
-                        } else {
-                            Text(lang)
-                        }
-                    }
+                    Text(lang).tag(lang)
                 }
-            } label: {
-                Image(systemName: "chevron.down")
             }
-            .fixedSize()
+            .labelsHidden()
+            .frame(maxWidth: 200)
         }
+    }
+
+    private var metadataBar: some View {
+        HStack(spacing: 14) {
+            Label {
+                Text("Created \(snippet.createdAt.formatted(date: .abbreviated, time: .omitted))")
+            } icon: {
+                Image(systemName: "calendar")
+            }
+            Spacer(minLength: 0)
+            Text("\(snippet.code.count) chars")
+                .contentTransition(.numericText())
+                .animation(.easeOut(duration: 0.2), value: snippet.code.count)
+            Text("\(lineCount) lines")
+                .contentTransition(.numericText())
+                .animation(.easeOut(duration: 0.2), value: lineCount)
+        }
+        .font(.caption)
+        .foregroundStyle(.secondary)
+        .padding(.top, 2)
+    }
+
+    private var lineCount: Int {
+        snippet.code.isEmpty ? 0 : snippet.code.split(omittingEmptySubsequences: false, whereSeparator: \.isNewline).count
     }
 
     private var tagsRow: some View {
@@ -91,18 +163,25 @@ struct SnippetDetailView: View {
                 HStack(spacing: 6) {
                     ForEach(snippet.tags) { tag in
                         tagChip(tag)
+                            .transition(.asymmetric(
+                                insertion: .scale(scale: 0.6).combined(with: .opacity),
+                                removal: .opacity.combined(with: .move(edge: .leading))
+                            ))
                     }
                 }
                 .padding(.vertical, 2)
+                .animation(.spring(response: 0.35, dampingFraction: 0.7), value: snippet.tags)
             }
             .frame(height: 24)
             Menu {
                 ForEach(tags.filter { !Tag.defaultNames.contains($0.name) }) { tag in
                     Button {
-                        if let i = snippet.tags.firstIndex(of: tag) {
-                            snippet.tags.remove(at: i)
-                        } else {
-                            snippet.tags.append(tag)
+                        withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                            if let i = snippet.tags.firstIndex(of: tag) {
+                                snippet.tags.remove(at: i)
+                            } else {
+                                snippet.tags.append(tag)
+                            }
                         }
                     } label: {
                         if snippet.tags.contains(tag) {
@@ -124,8 +203,10 @@ struct SnippetDetailView: View {
             Text(tag.name)
                 .font(.caption)
             Button {
-                if let i = snippet.tags.firstIndex(of: tag) {
-                    snippet.tags.remove(at: i)
+                withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
+                    if let i = snippet.tags.firstIndex(of: tag) {
+                        snippet.tags.remove(at: i)
+                    }
                 }
             } label: {
                 Image(systemName: "xmark.circle.fill")

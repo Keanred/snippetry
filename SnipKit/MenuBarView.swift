@@ -13,7 +13,10 @@ import AppKit
 import KeyboardShortcuts
 
 extension KeyboardShortcuts.Name {
-    static let togglePicker = Self("togglePicker")
+    static let togglePicker = Self(
+        "togglePicker",
+        initial: .init(.v, modifiers: [.control, .option, .command])
+    )
 }
 
 struct MenuBarView: View {
@@ -105,6 +108,18 @@ struct MenuBarView: View {
                 hintLabel("↵", "Copy")
                 hintLabel("⎋", "Close")
                 Spacer(minLength: 0)
+                Button {
+                    #if canImport(AppKit)
+                    NSApp.activate(ignoringOtherApps: true)
+                    NSApp.sendAction(Selector(("showSettingsWindow:")), to: nil, from: nil)
+                    #endif
+                } label: {
+                    Image(systemName: "gearshape")
+                }
+                .buttonStyle(.borderless)
+                .font(.caption)
+                .foregroundStyle(.secondary)
+                .help("Settings…")
                 Button("Quit") {
                     #if canImport(AppKit)
                     NSApp.terminate(nil)
@@ -199,11 +214,16 @@ private struct SnippetRow: View {
             }
             Spacer(minLength: 0)
             if isCopied {
-                Label("Copied", systemImage: "checkmark.circle.fill")
-                    .labelStyle(.titleAndIcon)
-                    .font(.caption.weight(.semibold))
-                    .foregroundStyle(.green)
-                    .transition(.opacity.combined(with: .scale))
+                Label {
+                    Text("Copied")
+                } icon: {
+                    Image(systemName: "checkmark.circle.fill")
+                        .symbolEffect(.bounce, value: isCopied)
+                }
+                .labelStyle(.titleAndIcon)
+                .font(.caption.weight(.semibold))
+                .foregroundStyle(.green)
+                .transition(.opacity.combined(with: .scale))
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
