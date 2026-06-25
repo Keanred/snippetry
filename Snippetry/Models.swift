@@ -1,6 +1,6 @@
 //
 //  Models.swift
-//  SnipKit
+//  Snippetry
 //
 //  Created by Anssi Keinänen on 10.6.2026.
 //
@@ -15,7 +15,7 @@ import SwiftUI
     var language: String = "plaintext"
     var createdAt: Date = Date.now
     var folder: Folder?
-    @Relationship(inverse: \Tag.snippets) var tags: [Tag] = []
+    @Relationship(inverse: \Tag.snippets) var tags: [Tag]?
 
     init(title: String, code: String, language: String = "plaintext") {
         self.title = title
@@ -29,7 +29,7 @@ import SwiftUI
     var name: String = ""
     var createdAt: Date = Date.now
     var colorHex: String?
-    var snippets: [Snippet] = []
+    var snippets: [Snippet]?
 
     init(name: String, colorHex: String? = nil) {
         self.name = name
@@ -40,6 +40,7 @@ import SwiftUI
 
 extension Tag {
     static let defaultNames = ["All tags"]
+    private static let didSeedDefaultsKey = "Tag.didSeedDefaults"
 
     var color: Color? {
         colorHex.flatMap { Color(hex: $0) }
@@ -47,12 +48,14 @@ extension Tag {
 
     @MainActor
     static func seedDefaultsIfNeeded(in context: ModelContext) {
+        guard !UserDefaults.standard.bool(forKey: didSeedDefaultsKey) else { return }
         let existing = (try? context.fetch(FetchDescriptor<Tag>())) ?? []
         let existingNames = Set(existing.map(\.name))
         for name in defaultNames where !existingNames.contains(name) {
             context.insert(Tag(name: name))
         }
         try? context.save()
+        UserDefaults.standard.set(true, forKey: didSeedDefaultsKey)
     }
 }
 
@@ -60,7 +63,7 @@ extension Tag {
     var name: String = ""
     var createdAt: Date = Date.now
     @Relationship(deleteRule: .nullify, inverse: \Snippet.folder)
-    var snippets: [Snippet] = []
+    var snippets: [Snippet]?
 
     init(name: String) {
         self.name = name
@@ -70,14 +73,17 @@ extension Tag {
 
 extension Folder {
     static let defaultNames = ["All snippets", "Favorites", "Trash"]
+    private static let didSeedDefaultsKey = "Folder.didSeedDefaults"
 
     @MainActor
     static func seedDefaultsIfNeeded(in context: ModelContext) {
+        guard !UserDefaults.standard.bool(forKey: didSeedDefaultsKey) else { return }
         let existing = (try? context.fetch(FetchDescriptor<Folder>())) ?? []
         let existingNames = Set(existing.map(\.name))
         for name in defaultNames where !existingNames.contains(name) {
             context.insert(Folder(name: name))
         }
         try? context.save()
+        UserDefaults.standard.set(true, forKey: didSeedDefaultsKey)
     }
 }

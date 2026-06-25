@@ -32,40 +32,40 @@
 
 /* Begin PBXFileReference section */
 		D52B62622FE10F8A00CADCCA /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
-		D52B62842FE16EDF00CADCCA /* SnipKit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = SnipKit.entitlements; sourceTree = "<group>"; };
+		D52B62842FE16EDF00CADCCA /* Snippetry.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Snippetry.entitlements; sourceTree = "<group>"; };
 		D54366322FDC5F7C00CCA8B3 /* snipkit.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = snipkit.icon; sourceTree = "<group>"; };
-		D5D67B832FD9BBE900A514CB /* SnipKit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SnipKit.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5D67B922FD9BBEA00A514CB /* SnipKitTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnipKitTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		D5D67B9C2FD9BBEA00A514CB /* SnipKitUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnipKitUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D67B832FD9BBE900A514CB /* Snippetry.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Snippetry.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D67B922FD9BBEA00A514CB /* SnippetryTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnippetryTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		D5D67B9C2FD9BBEA00A514CB /* SnippetryUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = SnippetryUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D52B62832FE16E6F00CADCCA /* Exceptions for "SnipKit" folder in "SnipKit" target */ = {
+		D52B62832FE16E6F00CADCCA /* Exceptions for "Snippetry" folder in "Snippetry" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
 			);
-			target = D5D67B822FD9BBE900A514CB /* SnipKit */;
+			target = D5D67B822FD9BBE900A514CB /* Snippetry */;
 		};
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		D5D67B852FD9BBE900A514CB /* SnipKit */ = {
+		D5D67B852FD9BBE900A514CB /* Snippetry */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				D52B62832FE16E6F00CADCCA /* Exceptions for "SnipKit" folder in "SnipKit" target */,
+				D52B62832FE16E6F00CADCCA /* Exceptions for "Snippetry" folder in "Snippetry" target */,
 			);
-			path = SnipKit;
+			path = Snippetry;
 			sourceTree = "<group>";
 		};
-		D5D67B952FD9BBEA00A514CB /* SnipKitTests */ = {
+		D5D67B952FD9BBEA00A514CB /* SnippetryTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SnipKitTests;
+			path = SnippetryTests;
 			sourceTree = "<group>";
 		};
-		D5D67B9F2FD9BBEA00A514CB /* SnipKitUITests */ = {
+		D5D67B9F2FD9BBEA00A514CB /* SnippetryUITests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = SnipKitUITests;
+			path = SnippetryUITests;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -107,23 +107,23 @@
 		D5D67B7A2FD9BBE900A514CB = {
 			isa = PBXGroup;
 			children = (
-				D5D67B852FD9BBE900A514CB /* SnipKit */,
-				D5D67B952FD9BBEA00A514CB /* SnipKitTests */,
-				D5D67B9F2FD9BBEA00A514CB /* SnipKitUITests */,
+				D5D67B852FD9BBE900A514CB /* Snippetry */,
+				D5D67B952FD9BBEA00A514CB /* SnippetryTests */,
+				D5D67B9F2FD9BBEA00A514CB /* SnippetryUITests */,
 				D5D67B842FD9BBE900A514CB /* Products */,
 				D54366322FDC5F7C00CCA8B3 /* snipkit.icon */,
 				D52B62562FE07DA500CADCCA /* Frameworks */,
 				D52B62622FE10F8A00CADCCA /* AppState.swift */,
-				D52B62842FE16EDF00CADCCA /* SnipKit.entitlements */,
+				D52B62842FE16EDF00CADCCA /* Snippetry.entitlements */,
 			);
 			sourceTree = "<group>";
 		};
 		D5D67B842FD9BBE900A514CB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				D5D67B832FD9BBE900A514CB /* SnipKit.app */,
-				D5D67B922FD9BBEA00A514CB /* SnipKitTests.xctest */,
-				D5D67B9C2FD9BBEA00A514CB /* SnipKitUITests.xctest */,
+				D5D67B832FD9BBE900A514CB /* Snippetry.app */,
+				D5D67B922FD9BBEA00A514CB /* SnippetryTests.xctest */,
+				D5D67B9C2FD9BBEA00A514CB /* SnippetryUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -131,9 +131,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		D5D67B822FD9BBE900A514CB /* SnipKit */ = {
+		D5D67B822FD9BBE900A514CB /* Snippetry */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5D67BA62FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnipKit" */;
+			buildConfigurationList = D5D67BA62FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "Snippetry" */;
 			buildPhases = (
 				D5D67B7F2FD9BBE900A514CB /* Sources */,
 				D5D67B802FD9BBE900A514CB /* Frameworks */,
@@ -144,20 +144,20 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				D5D67B852FD9BBE900A514CB /* SnipKit */,
+				D5D67B852FD9BBE900A514CB /* Snippetry */,
 			);
-			name = SnipKit;
+			name = Snippetry;
 			packageProductDependencies = (
 				D52B62572FE07DA500CADCCA /* KeyboardShortcuts */,
 				D52B62602FE087DD00CADCCA /* Highlightr */,
 			);
 			productName = SnipKit;
-			productReference = D5D67B832FD9BBE900A514CB /* SnipKit.app */;
+			productReference = D5D67B832FD9BBE900A514CB /* Snippetry.app */;
 			productType = "com.apple.product-type.application";
 		};
-		D5D67B912FD9BBEA00A514CB /* SnipKitTests */ = {
+		D5D67B912FD9BBEA00A514CB /* SnippetryTests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5D67BA92FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnipKitTests" */;
+			buildConfigurationList = D5D67BA92FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnippetryTests" */;
 			buildPhases = (
 				D5D67B8E2FD9BBEA00A514CB /* Sources */,
 				D5D67B8F2FD9BBEA00A514CB /* Frameworks */,
@@ -169,18 +169,18 @@
 				D5D67B942FD9BBEA00A514CB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D5D67B952FD9BBEA00A514CB /* SnipKitTests */,
+				D5D67B952FD9BBEA00A514CB /* SnippetryTests */,
 			);
-			name = SnipKitTests;
+			name = SnippetryTests;
 			packageProductDependencies = (
 			);
 			productName = SnipKitTests;
-			productReference = D5D67B922FD9BBEA00A514CB /* SnipKitTests.xctest */;
+			productReference = D5D67B922FD9BBEA00A514CB /* SnippetryTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		D5D67B9B2FD9BBEA00A514CB /* SnipKitUITests */ = {
+		D5D67B9B2FD9BBEA00A514CB /* SnippetryUITests */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = D5D67BAC2FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnipKitUITests" */;
+			buildConfigurationList = D5D67BAC2FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnippetryUITests" */;
 			buildPhases = (
 				D5D67B982FD9BBEA00A514CB /* Sources */,
 				D5D67B992FD9BBEA00A514CB /* Frameworks */,
@@ -192,13 +192,13 @@
 				D5D67B9E2FD9BBEA00A514CB /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
-				D5D67B9F2FD9BBEA00A514CB /* SnipKitUITests */,
+				D5D67B9F2FD9BBEA00A514CB /* SnippetryUITests */,
 			);
-			name = SnipKitUITests;
+			name = SnippetryUITests;
 			packageProductDependencies = (
 			);
 			productName = SnipKitUITests;
-			productReference = D5D67B9C2FD9BBEA00A514CB /* SnipKitUITests.xctest */;
+			productReference = D5D67B9C2FD9BBEA00A514CB /* SnippetryUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -224,7 +224,7 @@
 					};
 				};
 			};
-			buildConfigurationList = D5D67B7E2FD9BBE900A514CB /* Build configuration list for PBXProject "SnipKit" */;
+			buildConfigurationList = D5D67B7E2FD9BBE900A514CB /* Build configuration list for PBXProject "Snippetry" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
@@ -242,9 +242,9 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				D5D67B822FD9BBE900A514CB /* SnipKit */,
-				D5D67B912FD9BBEA00A514CB /* SnipKitTests */,
-				D5D67B9B2FD9BBEA00A514CB /* SnipKitUITests */,
+				D5D67B822FD9BBE900A514CB /* Snippetry */,
+				D5D67B912FD9BBEA00A514CB /* SnippetryTests */,
+				D5D67B9B2FD9BBEA00A514CB /* SnippetryUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -302,12 +302,12 @@
 /* Begin PBXTargetDependency section */
 		D5D67B942FD9BBEA00A514CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D5D67B822FD9BBE900A514CB /* SnipKit */;
+			target = D5D67B822FD9BBE900A514CB /* Snippetry */;
 			targetProxy = D5D67B932FD9BBEA00A514CB /* PBXContainerItemProxy */;
 		};
 		D5D67B9E2FD9BBEA00A514CB /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
-			target = D5D67B822FD9BBE900A514CB /* SnipKit */;
+			target = D5D67B822FD9BBE900A514CB /* Snippetry */;
 			targetProxy = D5D67B9D2FD9BBEA00A514CB /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
@@ -439,7 +439,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = snipkit;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = SnipKit;
+				CODE_SIGN_ENTITLEMENTS = SnipKit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -460,7 +461,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SnipKit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SnipKit;
+				INFOPLIST_KEY_CFBundleDisplayName = Snippetry;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -468,7 +469,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = keanred.SnipKit;
+				PRODUCT_BUNDLE_IDENTIFIER = keanred.Snippetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -486,7 +487,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = snipkit;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				ASSETCATALOG_COMPILER_INCLUDE_ALL_APPICON_ASSETS = YES;
-				CODE_SIGN_ENTITLEMENTS = SnipKit;
+				CODE_SIGN_ENTITLEMENTS = SnipKit.entitlements;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=macosx*]" = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				COMBINE_HIDPI_IMAGES = YES;
@@ -507,7 +509,7 @@
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = SnipKit/Info.plist;
-				INFOPLIST_KEY_CFBundleDisplayName = SnipKit;
+				INFOPLIST_KEY_CFBundleDisplayName = Snippetry;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.developer-tools";
 				INFOPLIST_KEY_NSHumanReadableCopyright = "";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -515,7 +517,7 @@
 					"@executable_path/../Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = keanred.SnipKit;
+				PRODUCT_BUNDLE_IDENTIFIER = keanred.Snippetry;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				REGISTER_APP_GROUPS = YES;
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
@@ -543,7 +545,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnipKit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SnipKit";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Snippetry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Snippetry";
 			};
 			name = Debug;
 		};
@@ -563,7 +565,7 @@
 				SWIFT_EMIT_LOC_STRINGS = NO;
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/SnipKit.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/SnipKit";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/Snippetry.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/Snippetry";
 			};
 			name = Release;
 		};
@@ -606,7 +608,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		D5D67B7E2FD9BBE900A514CB /* Build configuration list for PBXProject "SnipKit" */ = {
+		D5D67B7E2FD9BBE900A514CB /* Build configuration list for PBXProject "Snippetry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D5D67BA42FD9BBEA00A514CB /* Debug */,
@@ -615,7 +617,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5D67BA62FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnipKit" */ = {
+		D5D67BA62FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "Snippetry" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D5D67BA72FD9BBEA00A514CB /* Debug */,
@@ -624,7 +626,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5D67BA92FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnipKitTests" */ = {
+		D5D67BA92FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnippetryTests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D5D67BAA2FD9BBEA00A514CB /* Debug */,
@@ -633,7 +635,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		D5D67BAC2FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnipKitUITests" */ = {
+		D5D67BAC2FD9BBEA00A514CB /* Build configuration list for PBXNativeTarget "SnippetryUITests" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				D5D67BAD2FD9BBEA00A514CB /* Debug */,

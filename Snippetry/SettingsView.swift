@@ -1,6 +1,6 @@
 //
 //  SettingsView.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI
@@ -39,7 +39,7 @@ private struct GeneralSettings: View {
             }
 
             Section {
-                Toggle("Launch SnipKit at login", isOn: $launchAtLogin)
+                Toggle("Launch Snippetry at login", isOn: $launchAtLogin)
                     .onChange(of: launchAtLogin) { _, newValue in
                         updateLaunchAtLogin(newValue)
                     }
@@ -66,7 +66,7 @@ private struct GeneralSettings: View {
             } header: {
                 Text("Startup")
             } footer: {
-                Text("SnipKit will launch silently in the menu bar after login.")
+                Text("Snippetry will launch silently in the menu bar after login.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -111,7 +111,7 @@ private struct ShortcutsSettings: View {
             } header: {
                 Text("Global")
             } footer: {
-                Text("Works from any app, even when SnipKit isn't focused.")
+                Text("Works from any app, even when Snippetry isn't focused.")
                     .font(.caption)
                     .foregroundStyle(.secondary)
             }
@@ -120,6 +120,8 @@ private struct ShortcutsSettings: View {
                 ShortcutRow(label: "New snippet", keys: "⌘N")
                 ShortcutRow(label: "Focus search", keys: "⌘F")
                 ShortcutRow(label: "Copy snippet", keys: "⇧⌘C")
+                ShortcutRow(label: "Duplicate snippet", keys: "⌘D")
+                ShortcutRow(label: "Delete snippet", keys: "⌘⌫")
                 ShortcutRow(label: "Open settings", keys: "⌘,")
             }
         }
@@ -149,7 +151,7 @@ private struct AboutSettings: View {
                 .frame(width: 96, height: 96)
                 .accessibilityHidden(true)
 
-            Text("SnipKit")
+            Text("Snippetry")
                 .font(.title2.weight(.semibold))
 
             Text("Version \(version) (\(build))")

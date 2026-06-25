@@ -1,6 +1,6 @@
 //
 //  TagEditorSheet.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI

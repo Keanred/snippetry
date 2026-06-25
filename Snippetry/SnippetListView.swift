@@ -1,6 +1,6 @@
 //
 //  SnippetList.swift
-//  SnipKit
+//  Snippetry
 //
 //  Created by Anssi Keinänen on 12.6.2026.
 //
@@ -49,7 +49,7 @@ struct SnippetListView: View {
     private var visibleSnippets: [Snippet] {
         snippets.filter { snippet in
             if let folder, folder.name != "All snippets", snippet.folder != folder { return false }
-            if let tag, tag.name != "All tags", !snippet.tags.contains(where: { $0 == tag }) { return false }
+            if let tag, tag.name != "All tags", !(snippet.tags ?? []).contains(where: { $0 == tag }) { return false }
             return true
         }
     }
@@ -77,8 +77,10 @@ struct SnippetListView: View {
             }
             .animation(.easeInOut(duration: 0.25), value: visibleSnippets.count)
         }
-        .onChange(of: appState.focusSearchTrigger) { _, _ in
-            searchFocused = true
+        .onChange(of: appState.commandID) { _, _ in
+            if appState.lastCommand == .focusSearch {
+                searchFocused = true
+            }
         }
         .toolbar {
             ToolbarItem {

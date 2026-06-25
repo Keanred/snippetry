@@ -1,6 +1,6 @@
 //
 //  SnippetDetailView.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI
@@ -69,7 +69,6 @@ struct SnippetDetailView: View {
         .buttonStyle(.borderedProminent)
         .controlSize(.regular)
         .tint(didCopy ? .green : .accentColor)
-        .keyboardShortcut("c", modifiers: [.command, .shift])
         .help("Copy snippet to clipboard (⇧⌘C)")
     }
 
@@ -161,7 +160,7 @@ struct SnippetDetailView: View {
                 .foregroundStyle(.secondary)
             ScrollView(.horizontal, showsIndicators: false) {
                 HStack(spacing: 6) {
-                    ForEach(snippet.tags) { tag in
+                    ForEach(snippet.tags ?? []) { tag in
                         tagChip(tag)
                             .transition(.asymmetric(
                                 insertion: .scale(scale: 0.6).combined(with: .opacity),
@@ -177,14 +176,16 @@ struct SnippetDetailView: View {
                 ForEach(tags.filter { !Tag.defaultNames.contains($0.name) }) { tag in
                     Button {
                         withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
-                            if let i = snippet.tags.firstIndex(of: tag) {
-                                snippet.tags.remove(at: i)
+                            var tags = snippet.tags ?? []
+                            if let i = tags.firstIndex(of: tag) {
+                                tags.remove(at: i)
                             } else {
-                                snippet.tags.append(tag)
+                                tags.append(tag)
                             }
+                            snippet.tags = tags
                         }
                     } label: {
-                        if snippet.tags.contains(tag) {
+                        if (snippet.tags ?? []).contains(tag) {
                             Label(tag.name, systemImage: "checkmark")
                         } else {
                             Text(tag.name)
@@ -204,8 +205,10 @@ struct SnippetDetailView: View {
                 .font(.caption)
             Button {
                 withAnimation(.spring(response: 0.35, dampingFraction: 0.7)) {
-                    if let i = snippet.tags.firstIndex(of: tag) {
-                        snippet.tags.remove(at: i)
+                    var tags = snippet.tags ?? []
+                    if let i = tags.firstIndex(of: tag) {
+                        tags.remove(at: i)
+                        snippet.tags = tags
                     }
                 }
             } label: {

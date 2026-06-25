@@ -1,6 +1,6 @@
 //
 //  MenuBarView.swift
-//  SnipKit
+//  Snippetry
 //
 //  Created by Anssi Keinänen on 15.6.2026.
 //

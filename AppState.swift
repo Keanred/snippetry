@@ -1,13 +1,26 @@
 //
 //  AppState.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI
 
+enum Command {
+    case new,
+    focusSearch,
+    copy,
+    duplicate,
+    delete
+}
+
 @Observable
 @MainActor
 final class AppState {
-    var newSnippetTrigger: Int = 0
-    var focusSearchTrigger: Int = 0
+    private(set) var lastCommand: Command?
+    private(set) var commandID: Int = 0
+
+    func send(_ command: Command) {
+        lastCommand = command
+        commandID &+= 1
+    }
 }

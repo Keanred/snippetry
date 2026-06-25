@@ -1,6 +1,6 @@
 //
 //  HighlightedCodeView.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI
@@ -196,7 +196,7 @@ final class HighlightrPool {
     private init() {
         self.highlightr = Highlightr()
         if highlightr == nil {
-            NSLog("[SnipKit] Highlightr failed to initialize (JS/CSS resources missing).")
+            NSLog("[Snippetry] Highlightr failed to initialize (JS/CSS resources missing).")
         }
     }
 

@@ -1,6 +1,6 @@
 //
 //  Color+Hex.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI

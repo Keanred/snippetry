@@ -1,6 +1,6 @@
 //
 //  Languages.swift
-//  SnipKit
+//  Snippetry
 //
 //  Created by Anssi Keinänen on 12.6.2026.
 //

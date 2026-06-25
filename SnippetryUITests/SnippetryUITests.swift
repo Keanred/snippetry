@@ -1,13 +1,13 @@
 //
-//  SnipKitUITests.swift
-//  SnipKitUITests
+//  SnippetryUITests.swift
+//  SnippetryUITests
 //
 //  Created by Anssi Keinänen on 10.6.2026.
 //
 
 import XCTest
 
-final class SnipKitUITests: XCTestCase {
+final class SnippetryUITests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.

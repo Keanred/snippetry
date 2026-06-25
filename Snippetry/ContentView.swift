@@ -1,12 +1,13 @@
 //
 //  ContentView.swift
-//  SnipKit
+//  Snippetry
 //
 //  Created by Anssi Keinänen on 10.6.2026.
 //
 
 import SwiftUI
 import SwiftData
+import AppKit
 import KeyboardShortcuts
 
 struct ContentView: View {
@@ -58,8 +59,8 @@ struct ContentView: View {
                 }
             }
         }
-        .onChange(of: appState.newSnippetTrigger) { _, _ in
-            addSnippet()
+        .onChange(of: appState.commandID) { _, _ in
+            handle(appState.lastCommand)
         }
     }
 
@@ -73,9 +74,52 @@ struct ContentView: View {
         isTagSheetPresented = true
     }
 
+    private func handle(_ command: Command?) {
+        guard let command else { return }
+        switch command {
+        case .new: addSnippet()
+        case .copy: copySelection()
+        case .duplicate: duplicateSelection()
+        case .delete: deleteSelection()
+        case .focusSearch: break
+        }
+    }
+
     private func addSnippet() {
+        let snippet = Snippet(title: "New Snippet", code: "", language: defaultLanguage)
         withAnimation {
-            modelContext.insert(Snippet(title: "New Snippet", code: "", language: defaultLanguage))
+            modelContext.insert(snippet)
+            selectedSnippet = snippet
+        }
+    }
+
+    private func copySelection() {
+        guard let snippet = selectedSnippet else { return }
+        let pb = NSPasteboard.general
+        pb.clearContents()
+        pb.setString(snippet.code, forType: .string)
+    }
+
+    private func duplicateSelection() {
+        guard let snippet = selectedSnippet else { return }
+        let copy = Snippet(
+            title: snippet.title.isEmpty ? "Untitled Copy" : "\(snippet.title) Copy",
+            code: snippet.code,
+            language: snippet.language
+        )
+        copy.folder = snippet.folder
+        copy.tags = snippet.tags
+        withAnimation {
+            modelContext.insert(copy)
+            selectedSnippet = copy
+        }
+    }
+
+    private func deleteSelection() {
+        guard let snippet = selectedSnippet else { return }
+        withAnimation {
+            modelContext.delete(snippet)
+            selectedSnippet = nil
         }
     }
 }

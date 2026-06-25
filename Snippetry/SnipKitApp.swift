@@ -1,6 +1,6 @@
 //
-//  SnipKitApp.swift
-//  SnipKit
+//  SnippetryApp.swift
+//  Snippetry
 //
 //  Created by Anssi Keinänen on 10.6.2026.
 //
@@ -11,9 +11,18 @@ import AppKit
 import KeyboardShortcuts
 
 @main
-struct SnipShelfApp: App {
+struct SnippetryApp: App {
     let container: ModelContainer = {
-        try! ModelContainer(for: Snippet.self, Tag.self, Folder.self)
+        let config = ModelConfiguration(cloudKitDatabase: .private("iCloud.keanred.Snippetry"))
+        do {
+            return try ModelContainer(
+                for: Snippet.self, Tag.self, Folder.self,
+                configurations: config
+            )
+        } catch {
+            NSLog("[Snippetry] ModelContainer failed: \(error)")
+            fatalError("ModelContainer failed: \(error)")
+        }
     }()
 
     @State private var appState = AppState()
@@ -22,6 +31,8 @@ struct SnipShelfApp: App {
         KeyboardShortcuts.onKeyDown(for: .togglePicker) {
             Self.togglePicker()
         }
+        Folder.seedDefaultsIfNeeded(in: container.mainContext)
+        Tag.seedDefaultsIfNeeded(in: container.mainContext)
     }
 
     var body: some Scene {
@@ -31,15 +42,28 @@ struct SnipShelfApp: App {
             .commands {
                 CommandGroup(replacing: .newItem) {
                     Button("New Snippet") {
-                        appState.newSnippetTrigger &+= 1
+                        appState.send(.new)
                     }
                     .keyboardShortcut("n", modifiers: [.command])
                 }
                 CommandMenu("Snippets") {
                     Button("Focus Search") {
-                        appState.focusSearchTrigger &+= 1
+                        appState.send(.focusSearch)
                     }
                     .keyboardShortcut("f", modifiers: [.command])
+                    Divider()
+                    Button("Copy Snippet") {
+                        appState.send(.copy)
+                    }
+                    .keyboardShortcut("c", modifiers: [.command, .shift])
+                    Button("Duplicate Snippet") {
+                        appState.send(.duplicate)
+                    }
+                    .keyboardShortcut("d", modifiers: [.command])
+                    Button("Delete Snippet") {
+                        appState.send(.delete)
+                    }
+                    .keyboardShortcut(.delete, modifiers: [.command])
                     Divider()
                     Button("Toggle Snippet Picker") {
                         Self.togglePicker()
@@ -48,7 +72,7 @@ struct SnipShelfApp: App {
                 }
             }
 
-        MenuBarExtra("SnipKit", systemImage: "chevron.left.forwardslash.chevron.right") {
+        MenuBarExtra("Snippetry", image: "MenuBarIcon") {
             MenuBarView()
         }
         .menuBarExtraStyle(.window)

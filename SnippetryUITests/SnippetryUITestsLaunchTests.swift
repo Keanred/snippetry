@@ -1,13 +1,13 @@
 //
-//  SnipKitUITestsLaunchTests.swift
-//  SnipKitUITests
+//  SnippetryUITestsLaunchTests.swift
+//  SnippetryUITests
 //
 //  Created by Anssi Keinänen on 10.6.2026.
 //
 
 import XCTest
 
-final class SnipKitUITestsLaunchTests: XCTestCase {
+final class SnippetryUITestsLaunchTests: XCTestCase {
 
     override class var runsForEachTargetApplicationUIConfiguration: Bool {
         true

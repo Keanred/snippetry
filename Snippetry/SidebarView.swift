@@ -1,6 +1,6 @@
 //
 //  SidebarView.swift
-//  SnipKit
+//  Snippetry
 //
 
 import SwiftUI
